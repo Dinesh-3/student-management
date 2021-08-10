@@ -45,8 +45,8 @@ public class ResultService {
     }
 
     public ResponseEntity<ResponseBody> updateResult(Result result) {
-        Result updated = repository.save(result);
-        ResponseBody response = new ResponseBody(updated);
+        Result updatedResult = repository.save(result);
+        ResponseBody response = new ResponseBody(updatedResult);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

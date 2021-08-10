@@ -29,16 +29,10 @@ public class StudentService {
     }
 
     public ResponseEntity<ResponseBody> createStudent(Student student) {
-        Student save = repository.save(student);
-        ResponseBody response = new ResponseBody(save);
+        Student savedStudent = repository.save(student);
+        ResponseBody response = new ResponseBody(savedStudent);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-//    public ResponseEntity<ResponseBody> updateStudent(Student student) {
-//        Student save = repository.save(student);
-//        ResponseBody response = new ResponseBody(save);
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
 
     public ResponseEntity<ResponseBody> deleteStudent(long id) {
         repository.deleteById(id);
