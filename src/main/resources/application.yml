@@ -6,9 +6,9 @@ spring:
       ddl-auto: update
   datasource:
     platform: postgres
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://ec2-54-74-95-84.eu-west-1.compute.amazonaws.com:5432/deh1sfl1j816ss
+    username: vgquxnpwncvbiv
+    password: 254f57bb6214a80a53860510177621eb6271d4ad6817f9e72ad9d325b1b70a47
 
 server:
   port: 8080
