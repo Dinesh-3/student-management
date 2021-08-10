@@ -22,8 +22,9 @@ public class StudentService {
     }
 
     public ResponseEntity<ResponseBody> getStudent(long id) {
+        boolean isStudentExist = repository.existsById(id);
+        if(!isStudentExist) throw new StudentNotFoundException();
         Optional<Student> student = repository.findById(id);
-//        if(student.isEmpty()) throw new StudentNotFoundException();
         ResponseBody response = new ResponseBody(student);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
