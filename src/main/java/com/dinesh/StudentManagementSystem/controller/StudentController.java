@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1/student")
 public class StudentController {
@@ -15,8 +17,8 @@ public class StudentController {
     private StudentService service;
 
     @GetMapping()
-    public ResponseEntity<ResponseBody> getAllStudents() {
-        return service.getAllStudents();
+    public ResponseEntity<ResponseBody> getAllStudents(@RequestParam Map<String,String> queryParams) {
+        return service.getAllStudents(queryParams);
     }
 
     @GetMapping("/{id}")
@@ -37,6 +39,12 @@ public class StudentController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseBody> deleteStudent(@PathVariable long id) {
         return service.deleteStudent(id);
+    }
+
+
+    @GetMapping("/search")
+    public ResponseEntity<ResponseBody> searchStudents(@RequestParam String query) {
+        return service.findStudents(query);
     }
 
 }

@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -16,8 +19,15 @@ public class StudentService {
     @Autowired
     private StudentRepository repository;
 
-    public ResponseEntity<ResponseBody> getAllStudents() {
-        ResponseBody response = new ResponseBody(repository.findAll());
+    public ResponseEntity<ResponseBody> getAllStudents(Map<String, String> queryParams) {
+        Iterable<Student> students;
+        if(queryParams.containsKey("page") && queryParams.containsKey("limit")) {
+            Map<String, Integer> pageQuery = getPageQuery(queryParams);
+            students = repository.paginate(pageQuery.get("offset"), pageQuery.get("limit"));
+        }
+        else students = repository.findAll();
+
+        ResponseBody response = new ResponseBody(students);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -40,4 +50,25 @@ public class StudentService {
         ResponseBody response = new ResponseBody(null);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    public ResponseEntity<ResponseBody> findStudents(String query) {
+        List<Student> students = repository.findByContaining(query);
+        ResponseBody response = new ResponseBody(students);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    private Map<String, Integer> getPageQuery(Map<String, String> query) {
+        Map<String, Integer> hashMap = new HashMap<>();
+        try {
+            int limit = Integer.parseInt(query.get("limit"));
+            int page = Integer.parseInt(query.get("page"));
+            hashMap.put("limit", limit);
+            hashMap.put("page", page);
+            hashMap.put("offset", (page - 1) * limit);
+        }catch (Exception e) {
+            throw new IllegalArgumentException("Page and Limit must be an integer");
+        }
+        return hashMap;
+    }
+
 }

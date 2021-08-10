@@ -14,7 +14,7 @@ import javax.validation.UnexpectedTypeException;
 @ControllerAdvice
 public class CustomExceptionHandler {
 //    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({MethodArgumentNotValidException.class, UnexpectedTypeException.class, ConstraintViolationException.class})
+    @ExceptionHandler({MethodArgumentNotValidException.class, UnexpectedTypeException.class, ConstraintViolationException.class, IllegalArgumentException.class})
     public ResponseEntity<ResponseBody> handleValidationExceptions( Exception ex) {
         ResponseBody responseBody = new ResponseBody(false, ex.getMessage(), null);
         return new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
