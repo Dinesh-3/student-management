@@ -30,14 +30,14 @@ public class ResultService {
 
     public ResponseEntity<ResponseBody> getResult(long id) {
         Optional<Result> result = repository.findById(id);
-        if(result.isEmpty()) throw new ResultNotFoundException("Result Not Found");
+//        if(result.isEmpty()) throw new ResultNotFoundException("Result Not Found");
         ResponseBody response = new ResponseBody(result.get());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     public ResponseEntity<ResponseBody> createResult(Result result, long student_id) {
         Optional<Student> student = studentRepository.findById(student_id);
-        if(student.isEmpty()) throw new StudentNotFoundException("Student Not Found");
+//        if(student.isEmpty()) throw new StudentNotFoundException("Student Not Found");
         result.setStudent(student.get());
         Result saved = repository.save(result);
         ResponseBody response = new ResponseBody(saved);
