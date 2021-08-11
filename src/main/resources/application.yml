@@ -12,3 +12,7 @@ spring:
 
 server:
   port: 8080
+
+json_placeholder:
+  base_url: https://jsonplaceholder.typicode.com
+
