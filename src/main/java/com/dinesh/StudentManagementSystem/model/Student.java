@@ -25,7 +25,8 @@ public class Student extends Auditable {
     @OneToMany(
         mappedBy = "student",
         cascade = CascadeType.ALL,
-        orphanRemoval = true
+        orphanRemoval = true,
+        fetch = FetchType.EAGER
     )
     private List<Result> results = new ArrayList<>();
 
