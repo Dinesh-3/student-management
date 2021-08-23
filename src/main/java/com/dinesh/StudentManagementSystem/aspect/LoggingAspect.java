@@ -12,6 +12,22 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+/*
+    AOP -> Aspect Oriented Programming
+    Definition -> Cross-Cutting Concern (or) Separation of concern
+        Execute a piece code before, after, exception or both before and after a method.
+    Application:
+        1. This pattern separate's the business logic with logging or security logics
+        2. Uses Logging, Security, Monitoring traffic, Analytics like Count api usage by user and etc
+        3. Creates Extra layer to separate logic's
+        4. Code Re usability and remove's duplicate code
+    Disadvantages:
+        1. Adding more advices are hard to maintain and understand
+        2. Performance will be reduced due to extra layer of code.
+            So need to be avoided intensive operations in Aspect advice
+ */
+
+
 @Aspect
 @Component
 @Order(1) // These advices are run first, negative numbers are allowed RANGE: Integer.MIN_VALUE to Integer.MAX_VALUE, if order is same it will pick random order between those
