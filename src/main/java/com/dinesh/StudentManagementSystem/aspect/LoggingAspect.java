@@ -68,10 +68,10 @@ final public class LoggingAspect {
     private void controllerPointCut(){};
 
 //    To use Pointcut
-    @Before("com.dinesh.StudentManagementSystem.aspect.Pointcuts.servicePointCut() || controllerPointCut()") // adding multiple point cut
-    public void useServicePointcut(){
-        System.out.println("TO use Pointcut need to add method name with ()");
-    }
+//    @Before("com.dinesh.StudentManagementSystem.aspect.Pointcuts.servicePointCut() || controllerPointCut()") // adding multiple point cut
+//    public void useServicePointcut(){
+//        System.out.println("TO use Pointcut need to add method name with ()");
+//    }
 
 //    @Before("execution(public org.springframework.http.ResponseEntity<com.dinesh.StudentManagementSystem.util.ResponseBody> createStudent())")
 //    public void addStudent() {
@@ -83,45 +83,38 @@ final public class LoggingAspect {
         --- JOIN POINTS ---
         To get method args and more...
      */
-    @Before("execution(public org.springframework.http.ResponseEntity<com.dinesh.StudentManagementSystem.util.ResponseBody> com.dinesh.StudentManagementSystem.service.StudentService.createStudent(com.dinesh.StudentManagementSystem.model.Student))")
-    public void addStudent(JoinPoint joinPoint) {
-        System.out.println("BEFORE CREATE STUDENT");
-
-        var obj = joinPoint.getArgs()[0];
-        if(obj instanceof Student){
-            Student student = (Student) obj;
-            System.out.println("arg = " + student.getFirst_name());
-            long id = student.getId();
-            System.out.println("student id = " + id);
-        }
-        Signature signature = joinPoint.getSignature();
-        System.out.println("signature = " + signature);
-    }
-
-    @AfterReturning(
-            pointcut = "execution(public org.springframework.http.ResponseEntity<com.dinesh.StudentManagementSystem.util.ResponseBody> com.dinesh.StudentManagementSystem.service.StudentService.createStudent(com.dinesh.StudentManagementSystem.model.Student))",
-            returning = "result" // need to math with below variable name
-    )
-    public void afterReturningStudent(JoinPoint joinPoint, ResponseEntity<ResponseBody> result) {
-        System.out.println("AFTER RETURNING CREATE STUDENT");
-
+//    @Before("execution(public org.springframework.http.ResponseEntity<com.dinesh.StudentManagementSystem.util.ResponseBody> com.dinesh.StudentManagementSystem.service.StudentService.createStudent(com.dinesh.StudentManagementSystem.model.Student))")
+//    public void addStudent(JoinPoint joinPoint) {
+//        System.out.println("BEFORE CREATE STUDENT");
+//
 //        var obj = joinPoint.getArgs()[0];
 //        if(obj instanceof Student){
 //            Student student = (Student) obj;
 //            System.out.println("arg = " + student.getFirst_name());
+//            long id = student.getId();
+//            System.out.println("student id = " + id);
 //        }
 //        Signature signature = joinPoint.getSignature();
 //        System.out.println("signature = " + signature);
-        Object data = result.getBody().getData();
-        if(data instanceof Student) {
-            Student student = (Student) data;
-            long id = student.getId();
-            // 🔔 changes will affect in response 🔔
-//            student.setFirst_name("Dinesh I");
-            System.out.println("student id = " + id);
-        }
+//    }
 
-    }
+//    @AfterReturning(
+//            pointcut = "execution(public org.springframework.http.ResponseEntity<com.dinesh.StudentManagementSystem.util.ResponseBody> com.dinesh.StudentManagementSystem.service.StudentService.createStudent(com.dinesh.StudentManagementSystem.model.Student))",
+//            returning = "result" // need to math with below variable name
+//    )
+//    public void afterReturningStudent(JoinPoint joinPoint, ResponseEntity<ResponseBody> result) {
+//        System.out.println("AFTER RETURNING CREATE STUDENT");
+//
+//        Object data = result.getBody().getData();
+//        if(data instanceof Student) {
+//            Student student = (Student) data;
+//            long id = student.getId();
+//            // 🔔 changes will affect in response 🔔
+////            student.setFirst_name("Dinesh I");
+//            System.out.println("student id = " + id);
+//        }
+//
+//    }
 
     /*
         @AfterThrowing
@@ -129,15 +122,15 @@ final public class LoggingAspect {
         Runs if specified aspect throws any error
      */
 
-    @AfterThrowing(
-            pointcut = "execution(* com.dinesh.StudentManagementSystem.service.*.*(..))",
-            throwing = "exception"
-    )
-    private void afterThrowing(JoinPoint joinPoint, Throwable exception){
-        System.out.println("After Thrown ERROR THROWN AT: " + joinPoint.getSignature().toShortString());
-        System.out.println("Error: " + exception.getMessage());
-//        throw new IllegalArgumentException("Exception thrown in After Thrown");
-    };
+//    @AfterThrowing(
+//            pointcut = "execution(* com.dinesh.StudentManagementSystem.service.*.*(..))",
+//            throwing = "exception"
+//    )
+//    private void afterThrowing(JoinPoint joinPoint, Throwable exception){
+//        System.out.println("After Thrown ERROR THROWN AT: " + joinPoint.getSignature().toShortString());
+//        System.out.println("Error: " + exception.getMessage());
+////        throw new IllegalArgumentException("Exception thrown in After Thrown");
+//    };
 
     /*
         @After
@@ -159,24 +152,24 @@ final public class LoggingAspect {
             2. Runs last after all the advice are executed
             3. If error thrown first @AfterThrowing runs then catch block run
      */
-    @Around("execution(* com.dinesh.StudentManagementSystem.service.*.*(..))")
-    private Object around(ProceedingJoinPoint joinPoint) throws Throwable {
-        long start = System.currentTimeMillis();
-        Object result = null;
-        try {
-            result = joinPoint.proceed();
-        } catch (Throwable e) {
-            System.out.println("EXCEPTION HANDLING IN AROUND Error: " + e.getMessage());
-            throw e;
-        }
-        long end = System.currentTimeMillis();
-        long timeInMillis = end - start;
-        System.out.println("Execution Time in Millis: " + timeInMillis);
-
-        // if we change the return type to primitive or different type
-        // except original and Object types it will throw type cast error
-        // in controller so be careful
-        return result;
-    };
+//    @Around("execution(* com.dinesh.StudentManagementSystem.service.*.*(..))")
+//    private Object around(ProceedingJoinPoint joinPoint) throws Throwable {
+//        long start = System.currentTimeMillis();
+//        Object result = null;
+//        try {
+//            result = joinPoint.proceed();
+//        } catch (Throwable e) {
+//            System.out.println("EXCEPTION HANDLING IN AROUND Error: " + e.getMessage());
+//            throw e;
+//        }
+//        long end = System.currentTimeMillis();
+//        long timeInMillis = end - start;
+//        System.out.println("Execution Time in Millis: " + timeInMillis);
+//
+//        // if we change the return type to primitive or different type
+//        // except original and Object types it will throw type cast error
+//        // in controller so be careful
+//        return result;
+//    };
 
 }
