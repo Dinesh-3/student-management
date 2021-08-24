@@ -11,9 +11,12 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
-
-server:
-  port: 8080
+#  main:
+#    web-application-type: none # disables web server
+  profiles: # dev, prod yaml's
+    active: dev
+#server:
+#  port: 8080
 
 json_placeholder:
   base_url: https://jsonplaceholder.typicode.com
