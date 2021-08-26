@@ -1,9 +1,22 @@
 package com.dinesh.StudentManagementSystem.util;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
+@JsonInclude(value = NON_NULL)
 public class ResponseBody {
     private boolean status = true;
     private String message = "Success";
     private Object data;
+
+    public ResponseBody() {
+    }
+
+    public ResponseBody(boolean status, String message) {
+        this.status = status;
+        this.message = message;
+    }
 
     public ResponseBody(Object data) {
         this.data = data;

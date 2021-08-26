@@ -20,7 +20,7 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({StudentNotFoundException.class, ResultNotFoundException.class})
+    @ExceptionHandler({UserNotFoundException.class, ResourceNotFoundException.class, StudentNotFoundException.class})
     public ResponseEntity<ResponseBody> handleUnexpectedTypeException( Exception ex) {
         ResponseBody responseBody = new ResponseBody(false, ex.getMessage(), null);
         return new ResponseEntity<>(responseBody, HttpStatus.NOT_FOUND);

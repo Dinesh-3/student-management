@@ -1,7 +1,14 @@
 package com.dinesh.StudentManagementSystem.service;
 
+import com.dinesh.StudentManagementSystem.dto.EnrollCourse;
+import com.dinesh.StudentManagementSystem.exception.ResourceNotFoundException;
 import com.dinesh.StudentManagementSystem.exception.StudentNotFoundException;
+import com.dinesh.StudentManagementSystem.model.Course;
+import com.dinesh.StudentManagementSystem.model.Enrollment;
+import com.dinesh.StudentManagementSystem.model.EnrollmentId;
 import com.dinesh.StudentManagementSystem.model.Student;
+import com.dinesh.StudentManagementSystem.repository.CourseRepository;
+import com.dinesh.StudentManagementSystem.repository.EnrollmentRepository;
 import com.dinesh.StudentManagementSystem.repository.StudentRepository;
 import com.dinesh.StudentManagementSystem.util.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,15 +16,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import javax.validation.constraints.NotNull;
+import java.util.*;
+import java.util.stream.Stream;
 
 @Service
 public class StudentService {
     @Autowired
     private StudentRepository repository;
+
+    @Autowired
+    private CourseRepository courseRepository;
+
+    @Autowired
+    private EnrollmentRepository enrollmentRepository;
+
 
     public ResponseEntity<ResponseBody> getAllStudents(Map<String, String> queryParams) {
         Iterable<Student> students;
@@ -34,7 +47,7 @@ public class StudentService {
     public ResponseEntity<ResponseBody> getStudent(long id) {
         Optional<Student> student = repository.findById(id);
         if(student.isEmpty()) throw new StudentNotFoundException();
-        ResponseBody response = new ResponseBody(repository.findAll());
+        ResponseBody response = new ResponseBody(student);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -76,4 +89,15 @@ public class StudentService {
         return hashMap;
     }
 
+    public ResponseEntity<ResponseBody> enrollCourse(EnrollCourse enrollCourse) {
+        Student student = repository.findById(enrollCourse.getStudent_id())
+                .orElseThrow(() -> new StudentNotFoundException("Student Not Found !"));
+        Course course = courseRepository.findById(enrollCourse.getCourse_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Course Not Found !"));
+//        student.addCourse(course);
+//        student.addEnrollment(new Enrollment(student, course));
+        Enrollment enrollment = new Enrollment(student, course);
+        enrollmentRepository.save(enrollment);
+        return new ResponseEntity<>(new ResponseBody(true, "Student Enrolled Successfully"), HttpStatus.OK);
+    }
 }

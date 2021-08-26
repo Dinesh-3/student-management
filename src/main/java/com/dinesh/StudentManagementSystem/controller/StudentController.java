@@ -1,5 +1,6 @@
 package com.dinesh.StudentManagementSystem.controller;
 
+import com.dinesh.StudentManagementSystem.dto.EnrollCourse;
 import com.dinesh.StudentManagementSystem.model.Student;
 import com.dinesh.StudentManagementSystem.service.StudentService;
 import com.dinesh.StudentManagementSystem.util.ResponseBody;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 @RestController
@@ -45,6 +47,11 @@ public class StudentController {
     @GetMapping("/search")
     public ResponseEntity<ResponseBody> searchStudents(@RequestParam String query) {
         return service.findStudents(query);
+    }
+
+    @PostMapping("/enroll")
+    public ResponseEntity<ResponseBody> enrollCourse(@NotNull @RequestBody EnrollCourse enroll) {
+        return service.enrollCourse(enroll);
     }
 
 }

@@ -1,11 +1,14 @@
 package com.dinesh.StudentManagementSystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "student")
@@ -17,28 +20,30 @@ public class Student extends Auditable {
     private String first_name;
     @NotBlank
     private String last_name;
-    @NotNull
-    private LocalDate date_of_birth;
-    @NotNull
-    @Enumerated(EnumType.ORDINAL)
-    private Branch branch;
+
+//    @ManyToMany(
+//            fetch = FetchType.EAGER
+//    )
+//    @JoinTable(
+//            name = "student_course",
+//            joinColumns = @JoinColumn(name = "student_id"),
+//            inverseJoinColumns = @JoinColumn(name = "course_id"))
+//    private Set<Course> courses;
+
     @OneToMany(
-        mappedBy = "student",
-        cascade = CascadeType.ALL,
-        orphanRemoval = true, 
-        fetch = FetchType.EAGER
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            mappedBy = "student",
+            fetch = FetchType.EAGER
     )
-    private List<Result> results = new ArrayList<>();
+    private Set<Enrollment> enrollments;
 
     public Student() {
     }
 
-    public Student(int id, String first_name, String last_name, LocalDate date_of_birth, Branch branch) {
-        setId(id);
-        setFirst_name(first_name);
-        setLast_name(last_name);
-        setDate_of_birth(date_of_birth);
-        setBranch(branch);
+    public Student(String first_name, String last_name, Set<Course> courses) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+//        this.courses = courses;
     }
 
     public long getId() {
@@ -65,24 +70,27 @@ public class Student extends Auditable {
         this.last_name = last_name;
     }
 
-    public LocalDate getDate_of_birth() {
-        return date_of_birth;
+    public Set<Enrollment> getEnrollments() {
+        return enrollments;
     }
 
-    public void setDate_of_birth(LocalDate date_of_birth) {
-        this.date_of_birth = date_of_birth;
+    public void setEnrollments(Set<Enrollment> enrollments) {
+        this.enrollments = enrollments;
     }
 
-
-    public List<Result> getResults() {
-        return results;
+    public void addEnrollment(Enrollment enrollment) {
+        enrollments.add(enrollment);
     }
 
-    public Branch getBranch() {
-        return branch;
-    }
-
-    public void setBranch(Branch branch) {
-        this.branch = branch;
-    }
+//    public Set<Course> getCourses() {
+//        return courses;
+//    }
+//
+//    public void setCourses(Set<Course> courses) {
+//        this.courses = courses;
+//    }
+//
+//    public void addCourse(Course course) {
+//        courses.add(course);
+//    }
 }
