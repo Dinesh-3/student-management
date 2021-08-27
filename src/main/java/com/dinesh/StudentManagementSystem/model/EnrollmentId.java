@@ -6,7 +6,6 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-
 public class EnrollmentId implements Serializable {
 
     @Column(name = "student_id")

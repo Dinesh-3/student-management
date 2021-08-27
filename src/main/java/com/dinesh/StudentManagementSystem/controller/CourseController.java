@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 @RestController
 @RequestMapping("/api/v1/course")
@@ -17,8 +18,8 @@ public class CourseController {
     private CourseService service;
 
     @GetMapping
-    ResponseEntity<ResponseBody> getCourses() {
-        return service.getAllCourses();
+    ResponseEntity<ResponseBody> getCourses(@RequestParam(name = "search",required = false, defaultValue = "") String search) {
+        return service.getAllCourses(search);
     }
 
     @GetMapping("/{courseId}")

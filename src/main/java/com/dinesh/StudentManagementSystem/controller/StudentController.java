@@ -20,7 +20,8 @@ public class StudentController {
 
     @GetMapping()
     public ResponseEntity<ResponseBody> getAllStudents(@RequestParam Map<String,String> queryParams) {
-        return service.getAllStudents(queryParams);
+        throw new Error("Error");
+//        return service.getAllStudents(queryParams);
     }
 
     @GetMapping("/{id}")

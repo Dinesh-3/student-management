@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
 import java.util.*;
@@ -84,7 +85,8 @@ public class StudentService {
             hashMap.put("page", page);
             hashMap.put("offset", (page - 1) * limit);
         }catch (Exception e) {
-            throw new IllegalArgumentException("Page and Limit must be an integer");
+//            throw new IllegalArgumentException("Page and Limit must be an integer");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Page and Limit must be an integer");
         }
         return hashMap;
     }

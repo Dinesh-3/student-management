@@ -45,6 +45,9 @@ public class Course extends Auditable{
     @JsonIgnore
     private Set<Enrollment> enrollments;
 
+    @Enumerated
+    private Category category;
+
     public Course() {
     }
 

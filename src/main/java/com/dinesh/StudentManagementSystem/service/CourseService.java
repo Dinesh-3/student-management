@@ -22,8 +22,12 @@ public class CourseService {
     @Autowired
     private InstructorRepository instructorRepository;
 
-    public ResponseEntity<ResponseBody> getAllCourses() {
-        Iterable<Course> courses = repository.findAll();
+    public ResponseEntity<ResponseBody> getAllCourses(String search) {
+
+        Iterable<Course> courses = repository.findByNameContaining(search);
+//        if(search != null && search.length() > 0) courses = repository.searchByName(search);
+//        else courses = repository.findAll();
+
         ResponseBody response = new ResponseBody(courses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
