@@ -31,7 +31,7 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(responseBody, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(MissingRequestValueException.class)
+    @ExceptionHandler({MissingRequestValueException.class, HttpMessageNotReadableException.class})
 //    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ResponseBody> handleClientException(Exception ex) {
         ResponseBody responseBody = new ResponseBody(false, ex.getMessage());

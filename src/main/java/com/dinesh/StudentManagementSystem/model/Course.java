@@ -1,15 +1,16 @@
 package com.dinesh.StudentManagementSystem.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
-@Table(name = "course")
+@Table(name = "course", indexes = {
+        @Index(name = "idx_course_instructor_id", columnList = "instructor_id")
+})
+//@JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
 public class Course extends Auditable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,13 +18,14 @@ public class Course extends Auditable{
 
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(
-            name = "instructor_id",
-            referencedColumnName = "id"
+    @ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH}
     )
-    @JsonManagedReference
-//    @JsonIgnore
+    @JoinColumn(
+            name = "instructor_id"
+//            referencedColumnName = "id"
+    )
+    @JsonBackReference
     private Instructor instructor;
 
     @Transient
@@ -42,10 +44,11 @@ public class Course extends Auditable{
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
             mappedBy = "course"
     )
-    @JsonIgnore
+    @JsonBackReference
     private Set<Enrollment> enrollments;
 
-    @Enumerated
+    @NotNull
+    @Enumerated(EnumType.ORDINAL)
     private Category category;
 
     public Course() {
@@ -115,4 +118,11 @@ public class Course extends Auditable{
         enrollments.add(enrollment);
     }
 
+    public String getCategory() {
+        return category.getCategory();
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }

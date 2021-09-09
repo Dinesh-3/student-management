@@ -1,6 +1,6 @@
 package com.dinesh.StudentManagementSystem.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -12,9 +12,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "student")
+//@JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class Student extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("student_id")
     private long id;
     @NotBlank
     private String first_name;
@@ -35,6 +37,7 @@ public class Student extends Auditable {
             mappedBy = "student",
             fetch = FetchType.EAGER
     )
+    @JsonManagedReference
     private Set<Enrollment> enrollments;
 
     public Student() {

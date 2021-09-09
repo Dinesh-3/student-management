@@ -1,14 +1,14 @@
 package com.dinesh.StudentManagementSystem.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity(name = "Enrolment")
 @Table(name = "enrolment")
+//@JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
+
 public class Enrollment extends Auditable{
 
     @EmbeddedId

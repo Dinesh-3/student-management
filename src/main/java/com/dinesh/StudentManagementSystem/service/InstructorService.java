@@ -1,5 +1,6 @@
 package com.dinesh.StudentManagementSystem.service;
 
+import com.dinesh.StudentManagementSystem.model.Course;
 import com.dinesh.StudentManagementSystem.model.Instructor;
 import com.dinesh.StudentManagementSystem.repository.InstructorRepository;
 import com.dinesh.StudentManagementSystem.util.ResponseBody;

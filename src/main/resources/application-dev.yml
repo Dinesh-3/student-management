@@ -1,2 +1,17 @@
 server:
-  port: 4040
+  port: 8080
+test:
+  name: Dinesh I
+
+logging:
+#  level:
+#    root: DEBUG # TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF
+#    tomcat: INFO # Using created group
+#    org:
+#      springframework:
+#        web: DEBUG
+#      hibernate: DEBUG
+
+  group:
+    tomcat: "org.apache.catalina,org.apache.coyote,org.apache.tomcat" # Creating a group, Once defined, you can change the level for all the loggers in the group with a single line:
+

@@ -17,11 +17,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.stream.Stream;
 
 @Service
+@Transactional
 public class StudentService {
     @Autowired
     private StudentRepository repository;
@@ -101,5 +103,11 @@ public class StudentService {
         Enrollment enrollment = new Enrollment(student, course);
         enrollmentRepository.save(enrollment);
         return new ResponseEntity<>(new ResponseBody(true, "Student Enrolled Successfully"), HttpStatus.OK);
+    }
+
+    public ResponseEntity<ResponseBody> getStudentByName(String firstName, String lastName) {
+        Student student = repository.findByFirst_nameContainsOrLast_nameContains(firstName, lastName)
+                .orElseThrow(() -> new StudentNotFoundException(String.format("Student with name : %s %s Not Found !",firstName, lastName)));
+        return new ResponseEntity<>(new ResponseBody(true, "Success", student), HttpStatus.OK);
     }
 }

@@ -20,8 +20,23 @@ public class StudentController {
 
     @GetMapping()
     public ResponseEntity<ResponseBody> getAllStudents(@RequestParam Map<String,String> queryParams) {
-        throw new Error("Error");
-//        return service.getAllStudents(queryParams);
+        return service.getAllStudents(queryParams);
+    }
+
+    @RequestMapping(params = {"student_id"})
+    public ResponseEntity<ResponseBody> getStudentById(@RequestParam("student_id") long studentId) {
+        return service.getStudent(studentId);
+    }
+
+    /**
+     *      ^
+     *      Two separate methods for handling different request params
+     *      |
+     */
+
+    @RequestMapping(params = {"first_name", "last_name"})
+    public ResponseEntity<ResponseBody> getStudentByName(@RequestParam("first_name") String firstName, @RequestParam("last_name") String lastName) {
+        return service.getStudentByName(firstName, lastName);
     }
 
     @GetMapping("/{id}")

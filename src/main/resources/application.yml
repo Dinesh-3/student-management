@@ -11,13 +11,19 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
-#  main:
-#    web-application-type: none # disables web server
+  autoconfigure:
+    exclude: #
+#    main:
+#      web-application-type: none # disables web server
+#      lazy-initialization: true # Initializes when they need
   profiles: # dev, prod yaml's
-    active: dev
+    active: dev # dev, prod comma seperated value
 #server:
 #  port: 8080
 
 json_placeholder:
   base_url: https://jsonplaceholder.typicode.com
 
+developer:
+  mode: ${spring.profiles.active}
+  name: dinesh

@@ -18,8 +18,9 @@ public class Instructor extends Auditable{
 
     @OneToMany(
             mappedBy = "instructor",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
+            cascade= {CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH},
+//            orphanRemoval = true,
             fetch = FetchType.EAGER
     )
     @JsonBackReference
