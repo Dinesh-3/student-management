@@ -12,6 +12,9 @@ import com.dinesh.StudentManagementSystem.repository.EnrollmentRepository;
 import com.dinesh.StudentManagementSystem.repository.StudentRepository;
 import com.dinesh.StudentManagementSystem.util.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -47,11 +50,41 @@ public class StudentService {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    public ResponseEntity<ResponseBody> getStudent(long id) {
-        Optional<Student> student = repository.findById(id);
-        if(student.isEmpty()) throw new StudentNotFoundException();
-        ResponseBody response = new ResponseBody(student);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    /**  CACHING
+     * Docs -> https://www.baeldung.com/spring-cache-tutorial
+     * @Cacheable
+     *  1. It will run only once if the given parameter already executed and stored in cache
+     *  2. unless property -> Not Caches if status is not true .
+     *  3. If error or exception thrown it will not store in cache
+     * Parameters:
+     *  condition: for input's
+     *  unless: for output
+     * @CacheEvict
+     *  1. The problem is size. We don't want to populate the cache with values that we don't need often.
+     *     Caches can grow quite large, quite fast, and we could be holding on to a lot of stale or unused data.
+     *  2. We can use the @CacheEvict annotation to indicate the removal of one or more/all values,
+     *     so that fresh values can be loaded into the cache again:
+     * @CachePut
+     * 1. With the @CachePut annotation, we can update the content of the cache without interfering with the method execution.
+     *    That is, the method will always be executed and the result cached.
+     * 2. The difference between @Cacheable and @CachePut is that @Cacheable will skip running the method,
+     *    whereas @CachePut will actually run the method and then put its results in the cache.
+     * @Caching
+     * 1.  we can group multiple caching annotations with @Caching, and use it to implement our own customized caching logic.
+     *      Ex. @Caching(evict = { @CacheEvict("addresses"), @CacheEvict(value="directory", key="#customer.name") })
+     *
+     */
+//    @Cacheable("getStudent")
+    @Cacheable(key = "#id", value = "getStudent", unless = "#result.status != true") // change true to false in return statement to verify
+    public ResponseBody getStudent(long id) {
+        class Sample{};
+
+        System.out.println("Called: " + new Object(){}.getClass().getEnclosingMethod().getName());
+        Student student = repository.findById(id)
+                            .orElseThrow(
+                                    () -> new StudentNotFoundException("Student id " + id + " Not Found!")
+                            );
+        return new ResponseBody(true, student);
     }
 
     public ResponseEntity<ResponseBody> createStudent(Student student) {
@@ -60,12 +93,14 @@ public class StudentService {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-//    public ResponseEntity<ResponseBody> updateStudent(Student student) {
-//        Student save = repository.save(student);
-//        ResponseBody response = new ResponseBody(save);
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
+    @CachePut("getStudent")
+    public ResponseEntity<ResponseBody> updateStudent(Student student) {
+        Student save = repository.save(student);
+        ResponseBody response = new ResponseBody(save);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
+    @CacheEvict(key = "#id", value = "getStudent")
     public ResponseEntity<ResponseBody> deleteStudent(long id) {
         repository.deleteById(id);
         ResponseBody response = new ResponseBody(null);

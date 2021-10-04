@@ -19,7 +19,7 @@ public class Student extends Auditable {
     @JsonProperty("student_id")
     private long id;
     @NotBlank
-    private String first_name;
+    private String first_name; // in springboot private transient String first_name; will throw error while running the program
     @NotBlank
     private String last_name;
 

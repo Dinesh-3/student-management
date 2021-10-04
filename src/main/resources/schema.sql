@@ -8,4 +8,4 @@ CREATE TABLE `test` (
   `last_name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`));
 
-INSERT INTO `test` VALUES (DEFAULT, 'Dinesh', "I");
+INSERT INTO `test` VALUES (DEFAULT, 'Dinesh', 'I');

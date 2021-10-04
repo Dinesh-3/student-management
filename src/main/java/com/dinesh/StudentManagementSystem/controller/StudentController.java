@@ -5,6 +5,8 @@ import com.dinesh.StudentManagementSystem.model.Student;
 import com.dinesh.StudentManagementSystem.service.StudentService;
 import com.dinesh.StudentManagementSystem.util.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,11 +14,15 @@ import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/student")
+@RequestMapping("student")
 public class StudentController {
 
     @Autowired
-    private StudentService service;
+    private final StudentService service;
+
+    public StudentController(StudentService service) {
+        this.service = service;
+    }
 
     @GetMapping()
     public ResponseEntity<ResponseBody> getAllStudents(@RequestParam Map<String,String> queryParams) {
@@ -25,7 +31,9 @@ public class StudentController {
 
     @RequestMapping(params = {"student_id"})
     public ResponseEntity<ResponseBody> getStudentById(@RequestParam("student_id") long studentId) {
-        return service.getStudent(studentId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("developer", "Dinesh I");
+        return new ResponseEntity<>(service.getStudent(studentId), headers, HttpStatus.OK);
     }
 
     /**
@@ -33,7 +41,6 @@ public class StudentController {
      *      Two separate methods for handling different request params
      *      |
      */
-
     @RequestMapping(params = {"first_name", "last_name"})
     public ResponseEntity<ResponseBody> getStudentByName(@RequestParam("first_name") String firstName, @RequestParam("last_name") String lastName) {
         return service.getStudentByName(firstName, lastName);
@@ -41,7 +48,7 @@ public class StudentController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseBody> getStudent(@PathVariable long id) {
-        return service.getStudent(id);
+        return new ResponseEntity<>(service.getStudent(id), HttpStatus.OK);
     }
 
     @PostMapping()

@@ -16,9 +16,23 @@ spring:
 #    main:
 #      web-application-type: none # disables web server
 #      lazy-initialization: true # Initializes when they need
+
   profiles: # dev, prod yaml's
     active: dev # dev, prod comma seperated value
-#server:
+#    SETUP BASE URL PATH
+#  data:
+#    rest: #  Works spring version < 2.0
+#      base-path: /api/v1 # Refer Docs https://stackoverflow.com/questions/47462267/setting-spring-rest-controllers-base-url-without-changing-the-static-resources-b/47466349
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+# To set up entire application including MVC template
+server:
+  servlet:
+    context-path: /api/v1 # Works spring version > 2.0
+# BASE PATH SETUP END
 #  port: 8080
 
 json_placeholder:

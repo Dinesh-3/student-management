@@ -28,8 +28,8 @@ import org.springframework.stereotype.Component;
  */
 
 
-//@Aspect
-//@Component
+@Aspect
+@Component
 //@Order(1) // These advices are run first, negative numbers are allowed RANGE: Integer.MIN_VALUE to Integer.MAX_VALUE, if order is same it will pick random order between those
 final public class LoggingAspect {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
@@ -86,7 +86,8 @@ final public class LoggingAspect {
     @Before("execution(public org.springframework.http.ResponseEntity<com.dinesh.StudentManagementSystem.util.ResponseBody> com.dinesh.StudentManagementSystem.service.StudentService.createStudent(com.dinesh.StudentManagementSystem.model.Student))")
     public void addStudent(JoinPoint joinPoint) {
         System.out.println("BEFORE CREATE STUDENT");
-
+        String kind = joinPoint.getKind();
+        System.out.println("kind = " + kind);
         var obj = joinPoint.getArgs()[0];
         if(obj instanceof Student){
             Student student = (Student) obj;

@@ -18,6 +18,11 @@ public class ResponseBody {
         this.message = message;
     }
 
+    public ResponseBody(boolean status, Object data) {
+        this.status = status;
+        this.data = data;
+    }
+
     public ResponseBody(Object data) {
         this.data = data;
     }

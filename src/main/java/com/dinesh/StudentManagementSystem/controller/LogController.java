@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/log")
+@RequestMapping("log")
 public class LogController {
     @Autowired
     private LogService service;
