@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class Student extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty("student_id")
+    @Positive
     private long id;
     @NotBlank
     private String first_name; // in springboot private transient String first_name; will throw error while running the program
@@ -96,4 +98,9 @@ public class Student extends Auditable {
 //    public void addCourse(Course course) {
 //        courses.add(course);
 //    }
+
+    @Override
+    public String toString() {
+        return String.format( "{\"id\": %s, \"first_name\": \"%s\", \"last_name\": \"%s\", \"enrollments\": \"%s\"}", id, first_name, last_name, enrollments);
+    }
 }

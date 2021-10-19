@@ -101,7 +101,7 @@ final public class LoggingAspect {
 
     @AfterReturning(
             pointcut = "execution(public org.springframework.http.ResponseEntity<com.dinesh.StudentManagementSystem.util.ResponseBody> com.dinesh.StudentManagementSystem.service.StudentService.createStudent(com.dinesh.StudentManagementSystem.model.Student))",
-            returning = "result" // need to math with below variable name
+            returning = "result" // need to match with below variable name
     )
     public void afterReturningStudent(JoinPoint joinPoint, ResponseEntity<ResponseBody> result) {
         System.out.println("AFTER RETURNING CREATE STUDENT");

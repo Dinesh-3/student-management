@@ -34,7 +34,10 @@ server:
     context-path: /api/v1 # Works spring version > 2.0
 # BASE PATH SETUP END
 #  port: 8080
-
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
 json_placeholder:
   base_url: https://jsonplaceholder.typicode.com
 

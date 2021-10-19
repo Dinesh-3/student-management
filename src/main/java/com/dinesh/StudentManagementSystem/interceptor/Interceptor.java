@@ -13,8 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class Interceptor implements HandlerInterceptor {
 
-    @Autowired
-    private LogService service;
+    private final LogService service;
+
+    public Interceptor(LogService service) {
+        this.service = service;
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

@@ -4,13 +4,21 @@ import com.dinesh.StudentManagementSystem.dto.EnrollCourse;
 import com.dinesh.StudentManagementSystem.model.Student;
 import com.dinesh.StudentManagementSystem.service.StudentService;
 import com.dinesh.StudentManagementSystem.util.ResponseBody;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 
 @RestController
@@ -24,16 +32,38 @@ public class StudentController {
         this.service = service;
     }
 
+    @Operation(summary = "This is to fetch All the Students")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Fetched All the Students",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404",
+                    description = "NOt Available",
+                    content = @Content)
+    })
     @GetMapping()
     public ResponseEntity<ResponseBody> getAllStudents(@RequestParam Map<String,String> queryParams) {
-        return service.getAllStudents(queryParams);
+        Iterable<Student> students = service.getAllStudents(queryParams);
+        return new ResponseEntity<>(new ResponseBody(students), HttpStatus.OK);
     }
 
     @RequestMapping(params = {"student_id"})
-    public ResponseEntity<ResponseBody> getStudentById(@RequestParam("student_id") long studentId) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("developer", "Dinesh I");
-        return new ResponseEntity<>(service.getStudent(studentId), headers, HttpStatus.OK);
+    public void getStudentById(@RequestParam("student_id") long studentId, HttpServletResponse response) throws IOException {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("developer", "Dinesh I");
+//        headers.add("Content-Type", "application/json");
+
+        response.addHeader("developer", "Dinesh I");
+        response.addHeader("Content-Type", "application/json");
+        System.out.println("response = " + response);
+
+        PrintWriter writer = response.getWriter();
+        ResponseBody student = service.getStudent(studentId);
+        writer.write(student.toString());
+        writer.close();
+//        return "";
+//        System.out.println("headers = " + headers);
+//        return new ResponseEntity<>(, headers, HttpStatus.OK);
     }
 
     /**

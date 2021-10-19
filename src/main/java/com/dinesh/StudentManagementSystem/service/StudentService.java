@@ -38,7 +38,7 @@ public class StudentService {
     private EnrollmentRepository enrollmentRepository;
 
 
-    public ResponseEntity<ResponseBody> getAllStudents(Map<String, String> queryParams) {
+    public Iterable<Student> getAllStudents(Map<String, String> queryParams) {
         Iterable<Student> students;
         if(queryParams.containsKey("page") && queryParams.containsKey("limit")) {
             Map<String, Integer> pageQuery = getPageQuery(queryParams);
@@ -46,12 +46,18 @@ public class StudentService {
         }
         else students = repository.findAll();
 
-        ResponseBody response = new ResponseBody(students);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return students;
     }
 
     /**  CACHING
-     * Docs -> https://www.baeldung.com/spring-cache-tutorial
+     * Docs ->
+     *  1. https://www.baeldung.com/spring-cache-tutorial
+     *  2. https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-caching.html
+     *
+     * Cache Providers -> Generic, Redis, Caffeine, Simple, Hazelcast, Infinispan, Couchbase, EhCache 2.x
+     * application properties:
+     *  1. spring.cache.type
+     *  2. spring.cache.type=none
      * @Cacheable
      *  1. It will run only once if the given parameter already executed and stored in cache
      *  2. unless property -> Not Caches if status is not true .

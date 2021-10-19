@@ -44,4 +44,10 @@ public class ResponseBody {
     public Object getData() {
         return data;
     }
+
+    @Override
+    public String toString() {
+
+        return String.format("{\"status\":%s,\"message\":\"%s\",\"data\":%s}",status,message,data);
+    }
 }
