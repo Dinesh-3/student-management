@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+    default-init-method="initBean"
+    default-destroy-method="destroyBean"
+>
+    <!-- We need to restart the server to take effect of new changes -->
+    <bean id="dinesh" class="com.dinesh.StudentManagementSystem.model.Student" autowire="byName">
+        <qualifier value="dinesh" type="java.lang.String"/>
+        <property name="first_name" value="${developer.name:dinesh}"/> <!-- setter injection -->
+        <property name="last_name" value="I"/>
+        <property name="id" value="1"/>
+    </bean>
+    <alias name="dinesh" alias="DINESH" /> <!-- We can specify and access with different name -->
+    <bean id="movie" class="com.dinesh.StudentManagementSystem.pojo.Movie" scope="prototype" name="movie2"> <!-- We can also access by name -->
+        <constructor-arg index="0" value="Ayan"/>
+        <constructor-arg index="1" value="Action movie by Actor Surya"/>
+        <property name="actor" ref="surya"/>
+<!--            <idref bean="surya" />-->
+<!--        </property>-->
+
+    <!--       Specifying Inner Bean -->
+<!--        <property name="actor" >-->
+<!--            <bean class="com.dinesh.StudentManagementSystem.pojo.Actor">-->
+<!--                <constructor-arg index="0" value="Surya"/>-->
+<!--                <constructor-arg index="1" value="T"/>-->
+<!--                <constructor-arg index="2" value="Male"/>-->
+<!--            </bean>-->
+<!--        </property>-->
+        <property name="songs">
+            <list> <!-- Also we have set and map -->
+                <value type="java.lang.String"> Song 1 </value>
+                <value type="java.lang.String"> Song 2 </value>
+                <value type="java.lang.String"> Song 3 </value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="suryaName" class="com.dinesh.StudentManagementSystem.pojo.Actor">
+        <qualifier value="actor" />
+        <constructor-arg index="0" value="Surya"/>
+        <constructor-arg index="1" value="T"/>
+    </bean>
+
+    <!--
+        It will inherit the configuration from above bean def using parent="suryaName" tag
+        We can also override the property in normal way of specifying
+     -->
+    <bean id="surya" class="com.dinesh.StudentManagementSystem.pojo.Actor" parent="suryaName">
+        <constructor-arg index="2" value="Male"/>
+    </bean>
+
+    <bean id="awareBean" class="com.dinesh.StudentManagementSystem.pojo.AwareBean" init-method="customInit" destroy-method="customCleanup">
+
+    </bean>
+
+    <!-- To initialize BeanPostProcessor -->
+    <bean class="com.dinesh.StudentManagementSystem.practice.BeanPostProcessorInitialize" />
+    <!-- To initialize BeanFactoryPostProcessor -->
+    <bean class="com.dinesh.StudentManagementSystem.practice.BeanFactoryPostProcessorInitialize" />
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
+        <property name="locations" value="classpath:application.properties" />
+    </bean>
+
+    <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor" />
+    <!-- For autowired -->
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+
+    <!--  This will to all above work  -->
+    <context:annotation-config/>
+    <!--
+        Below Code Affect in Application properties
+        <context:component-scan base-package="com.dinesh.StudentManagementSystem" />
+    -->
+</beans>

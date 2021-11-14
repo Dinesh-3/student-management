@@ -11,8 +11,7 @@ logging:
 #      springframework:
 #        web: DEBUG
 #      hibernate: DEBUG
-
-#logging.level.com.dailycodebuffer = TRACE
+  #logging.level.com.dailycodebuffer = TRACE
 #
 #
 #logging.pattern.console=%d [%level] %c{1.} [%t] %m%n
@@ -21,4 +20,6 @@ logging:
 
   group:
     tomcat: "org.apache.catalina,org.apache.coyote,org.apache.tomcat" # Creating a group, Once defined, you can change the level for all the loggers in the group with a single line:
+  file:
+    name: /home/dinesh/Downloads/Codingmart/StudentManagementSystem/logs/student_management_spring.log
 

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -29,6 +30,7 @@ public class InstructorService {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Transactional(rollbackFor = Exception.class, timeout = 1_000)
     public ResponseEntity<ResponseBody> create(Instructor instructor) {
         Instructor saveInstructor = repository.save(instructor);
         ResponseBody response = new ResponseBody(saveInstructor);

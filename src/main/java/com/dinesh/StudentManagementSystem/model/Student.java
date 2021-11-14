@@ -1,6 +1,7 @@
 package com.dinesh.StudentManagementSystem.model;
 
 import com.fasterxml.jackson.annotation.*;
+import org.springframework.beans.factory.annotation.Required;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -20,7 +21,7 @@ public class Student extends Auditable {
     @JsonProperty("student_id")
     @Positive
     private long id;
-    @NotBlank
+    @NotBlank(message = "First Name is Required")
     private String first_name; // in springboot private transient String first_name; will throw error while running the program
     @NotBlank
     private String last_name;
@@ -71,6 +72,7 @@ public class Student extends Auditable {
         return last_name;
     }
 
+    @Required // to make this setter value added in beans xml
     public void setLast_name(String last_name) {
         this.last_name = last_name;
     }
