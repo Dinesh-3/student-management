@@ -9,9 +9,12 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +35,14 @@ public class StudentController {
         this.service = service;
     }
 
+//    @InitBinder
+//    public void initBinder(WebDataBinder dataBinder) {
+//
+//        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+//
+//        dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+//    }
+
     @Operation(summary = "This is to fetch All the Students")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
@@ -41,10 +52,10 @@ public class StudentController {
                     description = "NOt Available",
                     content = @Content)
     })
-    @GetMapping()
+    @GetMapping(consumes = {}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity<ResponseBody> getAllStudents(@RequestParam Map<String,String> queryParams) {
         Iterable<Student> students = service.getAllStudents(queryParams);
-        return new ResponseEntity<>(new ResponseBody(students), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseBody(students));
     }
 
     @RequestMapping(params = {"student_id"})
@@ -71,24 +82,27 @@ public class StudentController {
      *      Two separate methods for handling different request params
      *      |
      */
-    @RequestMapping(params = {"first_name", "last_name"})
-    public ResponseEntity<ResponseBody> getStudentByName(@RequestParam("first_name") String firstName, @RequestParam("last_name") String lastName) {
-        return service.getStudentByName(firstName, lastName);
-    }
+//    @RequestMapping(params = {"first_name", "last_name"})
+//    public ResponseEntity<ResponseBody> getStudentByName(@RequestParam("first_name") String firstName, @RequestParam("last_name") String lastName) {
+//        return service.getStudentByName(firstName, lastName);
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseBody> getStudent(@PathVariable long id) {
         return new ResponseEntity<>(service.getStudent(id), HttpStatus.OK);
     }
 
-    @PostMapping()
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ResponseBody> createStudent(@RequestBody Student student) {
-        return service.createStudent(student);
+        System.out.println("student = " + student);
+//        Student result = service.createStudent(student);
+        return ResponseEntity.ok(new ResponseBody(new Object()));
     }
 
     @PutMapping()
     public ResponseEntity<ResponseBody> updateStudent(@RequestBody Student student) {
-        return service.createStudent(student);
+        Student result = service.createStudent(student);
+        return ResponseEntity.ok(new ResponseBody(result));
     }
 
     @DeleteMapping("/{id}")

@@ -16,7 +16,7 @@ public class Enrollment extends Auditable{
     private EnrollmentId id;
 
     @ManyToOne
-    @MapsId("studentId")
+    @MapsId("student_id")
     @JoinColumn(
             name = "student_id",
             foreignKey = @ForeignKey(
@@ -27,7 +27,7 @@ public class Enrollment extends Auditable{
     private Student student;
 
     @ManyToOne
-    @MapsId("courseId")
+    @MapsId("course_id")
     @JoinColumn(
             name = "course_id",
             foreignKey = @ForeignKey(

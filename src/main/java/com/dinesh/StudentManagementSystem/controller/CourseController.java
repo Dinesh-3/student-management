@@ -13,8 +13,11 @@ import javax.validation.constraints.NotNull;
 @RequestMapping("/course")
 public class CourseController {
 
-    @Autowired
-    private CourseService service;
+    private final CourseService service;
+
+    public CourseController(CourseService service) {
+        this.service = service;
+    }
 
     @GetMapping
     ResponseEntity<ResponseBody> getCourses(@RequestParam(name = "search",required = false, defaultValue = "") String search) {

@@ -9,6 +9,8 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.ContextLoaderListener;
 
 import java.nio.file.Paths;
 
@@ -30,7 +32,13 @@ public class BeanPractice {
 //        System.out.println("developerName = " + developerName);
         System.out.println("dinesh1 = " + dinesh1);
 
-//        AbstractApplicationContext pathXmlApplicationContext = new ClassPathXmlApplicationContext("beans.xml");
-//        pathXmlApplicationContext.registerShutdownHook(); // this will shutdown all the beans when beanPractise method ends
+        AbstractApplicationContext pathXmlApplicationContext = new ClassPathXmlApplicationContext("beans.xml");
+//        pathXmlApplicationContext.registerShutdownHook(); // this will shutdown all the beans when beanPractise method ends. Applicable for Command Line Project
+        pathXmlApplicationContext.stop(); // Force stop So preDestroy will not called
+        pathXmlApplicationContext.close(); // Lazy stop. So preDestroy will called
+
+//        ContextLoaderListener this class is responsible for creating context in spring web
+        ContextLoader contextLoader = new ContextLoader();
+        ContextLoaderListener contextLoaderListener = new ContextLoaderListener();
     }
 }

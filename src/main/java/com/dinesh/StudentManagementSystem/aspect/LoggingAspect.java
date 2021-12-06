@@ -12,10 +12,10 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-/*
+/**
     AOP -> Aspect Oriented Programming
     Definition -> Cross-Cutting Concern (or) Separation of concern
-        Execute a piece code before, after, exception or both before and after a method.
+        Execute a piece of code before, after, exception or both before and after a method.
     Application:
         1. This pattern separate's the business logic with logging or security logics
         2. Uses Logging, Security, Monitoring traffic, Analytics like Count api usage by user etc.
@@ -30,27 +30,26 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-//@Order(1) // These advices are run first, negative numbers are allowed RANGE: Integer.MIN_VALUE to Integer.MAX_VALUE, if order is same it will pick random order between those
+//@Order(1) // These advices are run first, negative numbers are allowed RANGE: Integer.MIN_VALUE to Integer.MAX_VALUE, if order is same it will pick random order between those. High number run first
 final public class LoggingAspect {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    // create* (check all the classes methods that are starts with create)
-    // * * createStudent() any modifier and return type
-    // * createStudent() modifier is optional
-
-    // POINT CUT MATCHING METHOD ARGUMENT
-    /*
+    /**
+      POINT CUT MATCHING METHOD ARGUMENT
+     create* (check all the classes methods that are starts with create)
+     * * createStudent() any modifier and return type
+     * createStudent() modifier is optional
     createAccount:
         () -> 0 arg
         (${Type}) -> 1 arg with specified type
         (*) -> 1 arg with any type
         (..) -> 1 or more arg with any type
         (${Type}, ..) -> 1 specified type and more args with any type
+        com.dinesh.StudentManagementSystem.service.*.*(..) -> matches all the method in service package classes with one or more args
      */
-    // com.dinesh.StudentManagementSystem.service.*.*(..) -> matches all the method in service package classes with one or more args
 
-    // DECLARING A POINT CUT
-    /*
+    /**
+      DECLARING A POINT CUT
         Uses:
             1. Easily Reuse point cut logic
             2. Removes code duplication
@@ -79,7 +78,7 @@ final public class LoggingAspect {
 //    }
 
 
-    /*
+    /**
         --- JOIN POINTS ---
         To get method args and more...
      */
@@ -116,7 +115,7 @@ final public class LoggingAspect {
 
     }
 
-    /*
+    /**
         @AfterThrowing
 
         Runs if specified aspect throws any error
@@ -132,7 +131,7 @@ final public class LoggingAspect {
 //        throw new IllegalArgumentException("Exception thrown in After Thrown");
     };
 
-    /*
+    /**
         @After
         Runs after method execution runs always success or error thrown similar to finally block
 
@@ -144,7 +143,7 @@ final public class LoggingAspect {
         log.info("Method Executed : " + joinPoint.getSignature().toShortString());
     };
 
-    /*
+    /**
         @Around
         Combination of @Before and @After
         Points:
@@ -166,9 +165,11 @@ final public class LoggingAspect {
         long timeInMillis = end - start;
         System.out.println("Execution Time in Millis: " + timeInMillis);
 
-        // if we change the return type to primitive or different type
-        // except original and Object types it will throw type cast error
-        // in controller so be careful
+        /**
+         *  if we change the return type to primitive or different type
+         *  except original and Object types it will throw type cast error
+         *  in controller so be careful
+         */
         return result;
     };
 

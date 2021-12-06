@@ -5,7 +5,6 @@ import com.dinesh.StudentManagementSystem.exception.ResourceNotFoundException;
 import com.dinesh.StudentManagementSystem.exception.StudentNotFoundException;
 import com.dinesh.StudentManagementSystem.model.Course;
 import com.dinesh.StudentManagementSystem.model.Enrollment;
-import com.dinesh.StudentManagementSystem.model.EnrollmentId;
 import com.dinesh.StudentManagementSystem.model.Student;
 import com.dinesh.StudentManagementSystem.repository.CourseRepository;
 import com.dinesh.StudentManagementSystem.repository.EnrollmentRepository;
@@ -21,9 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
-import javax.validation.constraints.NotNull;
 import java.util.*;
-import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -93,10 +90,10 @@ public class StudentService {
         return new ResponseBody(true, student);
     }
 
-    public ResponseEntity<ResponseBody> createStudent(Student student) {
+    public Student createStudent(Student student) {
         Student save = repository.save(student);
         ResponseBody response = new ResponseBody(save);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return save;
     }
 
     @CachePut("getStudent")
@@ -146,9 +143,9 @@ public class StudentService {
         return new ResponseEntity<>(new ResponseBody(true, "Student Enrolled Successfully"), HttpStatus.OK);
     }
 
-    public ResponseEntity<ResponseBody> getStudentByName(String firstName, String lastName) {
-        Student student = repository.findByFirst_nameContainsOrLast_nameContains(firstName, lastName)
-                .orElseThrow(() -> new StudentNotFoundException(String.format("Student with name : %s %s Not Found !",firstName, lastName)));
-        return new ResponseEntity<>(new ResponseBody(true, "Success", student), HttpStatus.OK);
-    }
+//    public ResponseEntity<ResponseBody> getStudentByName(String firstName, String lastName) {
+//        Student student = repository.findByFirst_nameContainsOrLast_nameContains(firstName, lastName)
+//                .orElseThrow(() -> new StudentNotFoundException(String.format("Student with name : %s %s Not Found !",firstName, lastName)));
+//        return new ResponseEntity<>(new ResponseBody(true, "Success", student), HttpStatus.OK);
+//    }
 }

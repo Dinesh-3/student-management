@@ -21,7 +21,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query(value = "SELECT * FROM student LIMIT ?1, ?2", nativeQuery = true)
     Iterable<Student> paginate(int offset, int limit);
 
-    @Query("select s from Student s where s.first_name like %?1% or s.last_name like %?2%")
-    Optional<Student> findByFirst_nameContainsOrLast_nameContains(String firstName, String lastName);
+//    @Query("select s from Student s where s.first_name like %?1% or s.last_name like %?2%")
+//    Optional<Student> findByFirst_nameContainsOrLast_nameContains(String firstName, String lastName);
 
 }

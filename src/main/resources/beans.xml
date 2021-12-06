@@ -74,7 +74,7 @@
     <!--  This will to all above work  -->
     <context:annotation-config/>
     <!--
-        Below Code Affect in Application properties
+        Below Code Affect in Application properties file not found
         <context:component-scan base-package="com.dinesh.StudentManagementSystem" />
     -->
 </beans>

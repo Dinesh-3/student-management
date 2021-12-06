@@ -38,10 +38,10 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
     }
 
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<ResponseBody> handleException(Exception ex) {
-//        ex.printStackTrace();
-//        ResponseBody responseBody = new ResponseBody(false, ex.getMessage());
-//        return new ResponseEntity<>(responseBody, HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ResponseBody> handleException(Exception ex) {
+        ex.printStackTrace();
+        ResponseBody responseBody = new ResponseBody(false, ex.getMessage());
+        return new ResponseEntity<>(responseBody, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

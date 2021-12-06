@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.Pointcut;
 @Aspect
 public class Pointcuts {
 
-    /*
+    /**
         By this we can use these pointcuts anywhere in the project
 
         In order to use these pointcuts need to add fully qualified name

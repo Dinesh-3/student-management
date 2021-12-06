@@ -1,6 +1,8 @@
 package com.dinesh.StudentManagementSystem.model;
 
+import com.dinesh.StudentManagementSystem.validation.UserName;
 import com.fasterxml.jackson.annotation.*;
+import org.hibernate.annotations.OnDelete;
 import org.springframework.beans.factory.annotation.Required;
 
 import javax.persistence.*;
@@ -12,19 +14,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@Entity
-@Table(name = "student")
+import static javax.persistence.GenerationType.*;
+
+@Entity(name = "student")
+@Table(
+        name = "student",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "student_email_unique", columnNames = "email")
+        }
+)
 //@JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
+@JsonIgnoreProperties(ignoreUnknown = false)
 public class Student extends Auditable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = SEQUENCE, generator = "student_sequence")
+    @SequenceGenerator(name = "student_sequence", sequenceName = "student_sequence", allocationSize = 1)
     @JsonProperty("student_id")
     @Positive
+    @Column(unique = true, updatable = false, nullable = false)
     private long id;
     @NotBlank(message = "First Name is Required")
     private String first_name; // in springboot private transient String first_name; will throw error while running the program
-    @NotBlank
+    @UserName
     private String last_name;
+    private String email;
 
 //    @ManyToMany(
 //            fetch = FetchType.EAGER
@@ -40,7 +53,7 @@ public class Student extends Auditable {
             mappedBy = "student",
             fetch = FetchType.EAGER
     )
-    @JsonManagedReference
+//    @JsonManagedReference // Collection, Map, Array or enumeration not support JsonBackReference
     private Set<Enrollment> enrollments;
 
     public Student() {
@@ -72,7 +85,7 @@ public class Student extends Auditable {
         return last_name;
     }
 
-    @Required // to make this setter value added in beans xml
+//    @Required // to make use this setter value added in beans xml
     public void setLast_name(String last_name) {
         this.last_name = last_name;
     }
@@ -101,8 +114,22 @@ public class Student extends Auditable {
 //        courses.add(course);
 //    }
 
+
     @Override
     public String toString() {
-        return String.format( "{\"id\": %s, \"first_name\": \"%s\", \"last_name\": \"%s\", \"enrollments\": \"%s\"}", id, first_name, last_name, enrollments);
+        return "Student{" +
+                "id=" + id +
+                ", first_name='" + first_name + '\'' +
+                ", last_name='" + last_name + '\'' +
+                ", enrollments=" + enrollments +
+                '}';
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

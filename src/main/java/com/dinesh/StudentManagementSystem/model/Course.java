@@ -48,7 +48,7 @@ public class Course extends Auditable{
     private Set<Enrollment> enrollments;
 
     @NotNull
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.ORDINAL) // ORDINAL = integer stored in db , EnumType.STRING for storing as string in db
     private Category category;
 
     public Course() {

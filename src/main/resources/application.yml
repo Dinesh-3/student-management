@@ -15,7 +15,7 @@ spring:
     exclude: #
 #    main:
 #      web-application-type: none # disables web server
-#      lazy-initialization: true # Initializes when they need
+#      lazy-initialization: true # Initializes objects when they need
 
   profiles: # dev, prod yaml's
     active: dev # dev, prod comma seperated value

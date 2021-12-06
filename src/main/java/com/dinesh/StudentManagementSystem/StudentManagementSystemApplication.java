@@ -15,6 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.ImportResource;
@@ -23,6 +24,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Arrays;
 
 /*
 	POM -> Project Object Model for pom.xml
@@ -52,7 +55,9 @@ public class StudentManagementSystemApplication implements CommandLineRunner, Ex
 
 //	@RequestMapping("api/v1") not work
 	public static void main(String[] args) {
-		SpringApplication.run(StudentManagementSystemApplication.class, args);
+		ConfigurableApplicationContext context = SpringApplication.run(StudentManagementSystemApplication.class, args);
+		String[] contextBeanDefinitionNames = context.getBeanDefinitionNames();
+		System.out.println("contextBeanDefinitionNames = " + Arrays.toString(contextBeanDefinitionNames));
 	}
 
 
