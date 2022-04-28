@@ -3,6 +3,8 @@ package com.dinesh.StudentManagementSystem;
 import com.dinesh.StudentManagementSystem.config.DeveloperConfig;
 import com.dinesh.StudentManagementSystem.model.Student;
 import com.dinesh.StudentManagementSystem.practice.BeanPractice;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +27,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /*
 	POM -> Project Object Model for pom.xml
@@ -70,6 +75,11 @@ public class StudentManagementSystemApplication implements CommandLineRunner, Ex
 		log.info("Developer " + developer);
 		BeanPractice beanPractice = new BeanPractice();
 		beanPractice.start();
+		String response = "{\"StatusCode\":\"200\", \"esrgwe\": \"ergwer\"}";
+		ObjectMapper objectMapper = new ObjectMapper();
+		Map<String,String> hashMap = objectMapper.readValue(response, Map.class);
+		Object statusCode = hashMap.get("StatusCode");
+		System.out.println("statusCode = " + statusCode);
 	}
 
 
