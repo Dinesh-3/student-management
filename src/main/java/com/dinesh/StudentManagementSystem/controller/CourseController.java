@@ -4,6 +4,7 @@ import com.dinesh.StudentManagementSystem.model.Course;
 import com.dinesh.StudentManagementSystem.service.CourseService;
 import com.dinesh.StudentManagementSystem.util.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class CourseController {
         this.service = service;
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<ResponseBody> getCourses(@RequestParam(name = "search",required = false, defaultValue = "") String search) {
         return service.getAllCourses(search);
     }

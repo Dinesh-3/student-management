@@ -1,9 +1,13 @@
 package com.dinesh.StudentManagementSystem.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.validation.constraints.NotNull;
+import java.util.HashMap;
 
 @Controller
 public class HomeController {
@@ -24,7 +28,9 @@ public class HomeController {
      */
 
     @RequestMapping(value = "/searchUser", params = {"firstName", "lastName"})
-    public String searchUserByName(@RequestParam String userName, @RequestParam String lastName) {
-        return "";
+    public ResponseEntity<?> searchUserByName(@NotNull @RequestParam String userName, @RequestParam String lastName) {
+        HashMap<Object, Object> objectObjectHashMap = new HashMap<>();
+//        return ResponseEntity.ok(objectObjectHashMap);
+        return ResponseEntity.badRequest().build(objectObjectHashMap);
     }
 }
